@@ -172,6 +172,44 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Login Response",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsYXJrc29uQGVtYWlsLmNvbSIsImlhdCI6MTY0MzI4MTU5NCwiZXhwIjoxNjQ1ODczNTk0fQ._uyAI181_YQ-BRY5VcakysI-nOBumHWc7JqVV2HYWz4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"larkson@email.com\",\n    \"password\": \"myfunkypassword1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/api/v1/login",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
@@ -185,6 +223,10 @@
 		},
 		{
 			"key": "baseurl",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "base",
 			"value": "localhost:5000"
 		}
 	]
