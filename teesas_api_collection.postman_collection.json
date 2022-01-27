@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "ef9e4cd3-7eba-4609-84c7-202d2fdcc1e5",
+		"name": "teesas_api_collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Signup Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"childName\": \"Kennie Lark\",\n\t\"email\": \"larkson@email.com\",\n\t\"password\": \"myfunkypassword1234\",\n\t\"confirmPassword\": \"myfunkypassword1234\",\n\t\"phoneNumber\": 123456789,\n\t\"countryCode\": 234,\n\t\"grade\": \"PRIMARY ONE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baserurl}}/api/v1/signup",
+					"host": [
+						"{{baserurl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"signup"
+					]
+				},
+				"description": "The sign up endpoint "
+			},
+			"response": []
+		},
+		{
+			"name": "Signup Response",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"childName\": \"Kennie Lark\",\n\t\"email\": \"larkson@email.com\",\n\t\"password\": \"myfunkypassword1234\",\n\t\"confirmPassword\": \"myfunkypassword1234\",\n\t\"phoneNumber\": 123456789,\n\t\"countryCode\": 234,\n\t\"grade\": \"PRIMARY ONE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baserurl}}/api/v1/signup",
+					"host": [
+						"{{baserurl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"signup"
+					]
+				},
+				"description": "Response "
+			},
+			"response": []
+		},
+		{
+			"name": "Login Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"larkson@email.com\",\n    \"password\": \"myfunkypassword1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/v1/login",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lessons Request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsYXJrc29uQGVtYWlsLmNvbSIsImlhdCI6MTY0MzI4MTU5NCwiZXhwIjoxNjQ1ODczNTk0fQ._uyAI181_YQ-BRY5VcakysI-nOBumHWc7JqVV2HYWz4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/v1/lessons",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lessons Response",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsYXJrc29uQGVtYWlsLmNvbSIsImlhdCI6MTY0MzI4MTU5NCwiZXhwIjoxNjQ1ODczNTk0fQ._uyAI181_YQ-BRY5VcakysI-nOBumHWc7JqVV2HYWz4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/v1/lessons",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "{{baseurl}}",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "baserurl",
+			"value": "localhost:5000"
+		},
+		{
+			"key": "baseurl",
+			"value": "localhost:5000"
+		}
+	]
+}
