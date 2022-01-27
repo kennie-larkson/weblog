@@ -6,31 +6,6 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 describe("Auth", () => {
-    // describe("/GET getAllData", () => {
-    //     it("it should get all the data", (done) => {
-    //         chai
-    //             .request(app)
-    //             .get("/api/v1/data")
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);
-    //                 res.body.should.be.a("array");
-    //                 done();
-    //             });
-    //     });
-    // });
-
-    // describe("/GET getDataById", () => {
-    //     it("it should return a specific data", (done) => {
-    //         chai
-    //             .request(app)
-    //             .get("/api/v1/data/:id")
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);
-    //                 res.body.should.be.a("object");
-    //                 done();
-    //             });
-    //     });
-    // });
 
     describe("/GET /", () => {
         it("it should return the index page", (done) => {

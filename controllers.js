@@ -106,19 +106,4 @@ module.exports = controller;
 
 
 
-// {
-// 	"childName": "Kennie Lark",
-// 	"email": "larkson@email.com",
-// 	"password": "myfunkypassword1234",
-// 	"confirmPassword": "myfunkypassword1234",
-// 	"phoneNumber": 123456789,
-// 	"countryCode": 234,
-// 	"grade": "PRIMARY ONE"
-// }
 
-
-// {
-//     "status": true,
-//     "message": "Log in successful",
-//     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsYXJrc29uQGVtYWlsLmNvbSIsImlhdCI6MTY0MzI4MTU5NCwiZXhwIjoxNjQ1ODczNTk0fQ._uyAI181_YQ-BRY5VcakysI-nOBumHWc7JqVV2HYWz4"
-// }

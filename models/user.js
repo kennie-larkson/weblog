@@ -19,8 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     phoneNumber: DataTypes.BIGINT,
     countryCode: DataTypes.INTEGER,
     password: DataTypes.STRING,
-    // passwordHash: DataTypes.STRING,
-    // confirmPassword: DataTypes.STRING,
     grade: DataTypes.STRING
   }, {
     sequelize,

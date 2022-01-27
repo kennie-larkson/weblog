@@ -30,7 +30,7 @@ app.post("/api/v1/login", (req, res) => {
 })
 
 app.post("/api/v1/signup", validateForm, hashPassword, (req, res) => {
-    // console.log(req.hashedPwd);
+
     controller.signup(req, res)
 })
 
