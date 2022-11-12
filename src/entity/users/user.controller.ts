@@ -34,7 +34,7 @@ export default class UserController {
     next: NextFunction
   ) {
     try {
-      const users = AppDataSource.getRepository(User).find();
+      const users = await AppDataSource.manager.getRepository(User).find();
       return response.json(users);
     } catch (error) {
       return response.json(error);

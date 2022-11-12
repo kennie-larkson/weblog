@@ -10,3 +10,9 @@ export interface IUpdateUser {
   password?: string;
   confirmPassword?: string;
 }
+
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
