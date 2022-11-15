@@ -34,7 +34,9 @@ export default class UserController {
     next: NextFunction
   ) {
     try {
-      const users = await AppDataSource.manager.getRepository(User).find();
+      const users = await AppDataSource.manager.getRepository(User).find({
+        relations: { posts: true },
+      });
       return response.json(users);
     } catch (error) {
       return response.json(error);

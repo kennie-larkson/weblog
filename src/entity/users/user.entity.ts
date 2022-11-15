@@ -1,8 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
 import "reflect-metadata";
+import Post from "../posts/post.entity";
 
 @Entity()
 class User {
+  [x: string]: any;
   @PrimaryGeneratedColumn()
   public id?: number;
 
@@ -14,6 +23,9 @@ class User {
 
   @Column({ select: false })
   public password?: string;
+
+  @OneToMany(() => Post, (post) => post.postOwner, { cascade: true })
+  posts!: Post[];
 }
 
 export default User;
