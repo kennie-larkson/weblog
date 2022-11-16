@@ -1,5 +1,6 @@
 import express from "express";
 import IPost from "./post.interface";
+import { validatePostForm } from "./../../middleware/validation.middleware";
 
 import AppDataSource from "./../../data-source";
 import { NextFunction, Request, Response } from "express";
@@ -16,11 +17,7 @@ export default class PostController {
   private initializeRoutes() {
     this.router.get(this.path, this.getAllPosts);
     this.router.get(`${this.path}/:id`, this.getPostById);
-    this.router.post(
-      `${this.path}`,
-
-      this.createPost
-    );
+    this.router.post(`${this.path}`, validatePostForm, this.createPost);
     this.router.delete(`${this.path}/:id`, this.removePost);
     this.router.patch(`${this.path}/:id`, this.updatePost);
   }
@@ -31,7 +28,9 @@ export default class PostController {
     next: NextFunction
   ) {
     try {
-      const posts = await AppDataSource.manager.getRepository(Post).find();
+      const posts = await AppDataSource.manager
+        .getRepository(Post)
+        .find({ relations: { postOwner: true } });
       return response.json(posts);
     } catch (error) {
       return response.json(error);
@@ -44,9 +43,19 @@ export default class PostController {
   }
 
   async createPost(request: Request, response: Response, next: NextFunction) {
-    // const post: IPost = request.body;
     const post: IPost = request.body;
-    return AppDataSource.manager.save(post);
+    //const post = request.body;
+    try {
+      const createdPost = AppDataSource.manager
+        .getRepository(Post)
+        .create(post);
+      const result = await AppDataSource.manager
+        .getRepository(Post)
+        .save(createdPost);
+      return response.json(result);
+    } catch (error) {
+      return response.json(error);
+    }
   }
 
   async removePost(request: Request, response: Response, next: NextFunction) {
@@ -67,7 +76,7 @@ export default class PostController {
         id: Number(id),
       });
       if (!postToUpdate) {
-        return response.json({ message: `Unable to find user with id ${id}` });
+        return response.json({ message: `Unable to find post with id ${id}` });
       }
       AppDataSource.getRepository(Post).merge(postToUpdate, update);
       const updatedPost = await AppDataSource.getRepository(Post).save(

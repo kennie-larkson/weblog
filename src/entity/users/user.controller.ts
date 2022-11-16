@@ -66,6 +66,7 @@ export default class UserController {
     try {
       const createdUser = AppDataSource.getRepository(User).create(user);
       const results = await AppDataSource.getRepository(User).save(createdUser);
+      delete results.password;
       return response.send(results);
     } catch (error) {
       return response.json(error);

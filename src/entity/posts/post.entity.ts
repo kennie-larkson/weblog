@@ -1,16 +1,10 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinTable,
-} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import "reflect-metadata";
 import User from "../users/user.entity";
 
 @Entity()
 class Post {
-  [x: string]: any;
+  //[x: string]: any;
   @PrimaryGeneratedColumn()
   public id?: number;
 

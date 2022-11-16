@@ -1,9 +1,11 @@
+import User from "entity/users/user.entity";
+
 interface IPost {
-  id: number;
+  //id: number;
   author: string;
   content: string;
   title: string;
-  postOwner: number;
+  postOwner: User;
 }
 
 export default IPost;
