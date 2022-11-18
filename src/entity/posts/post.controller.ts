@@ -30,7 +30,7 @@ export default class PostController {
     try {
       const posts = await AppDataSource.manager
         .getRepository(Post)
-        .find({ relations: { postOwner: true } });
+        .find({ relations: { author: true } });
       return response.json(posts);
     } catch (error) {
       return response.json(error);

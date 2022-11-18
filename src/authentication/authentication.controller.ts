@@ -3,11 +3,10 @@ import AuthenticationService from "./authentication.service";
 import { ICreateUser } from "./../entity/users/user.interface";
 import { validateUserForm } from "./../middleware/validation.middleware";
 
-//console.log(process.env.POSTGRES_DB);
 export default class AuthController {
-  private authService = new AuthenticationService();
   public path = "/auth";
   public router = express.Router();
+  private authService = new AuthenticationService();
 
   constructor() {
     this.initializeRoutes();
@@ -17,25 +16,25 @@ export default class AuthController {
     this.router.post(
       `${this.path}/register`,
       validateUserForm,
-      this.registerUser
+      this.registration
     );
   }
 
-  /**
-   * async register
-   */
-  public async registerUser(req: Request, res: Response, next: NextFunction) {
-    const userData: ICreateUser = req.body;
+  private registration = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    const userData: ICreateUser = request.body;
     try {
-      const { user } = await this.authService.register(
-        userData,
-        req,
-        res,
-        next
-      );
-      return res.send(user);
+      const { cookie, user } = await this.authService.register(userData);
+      console.log({ user, cookie });
+
+      //await this.authService.register(userData);
+      response.setHeader("Set-Cookie", [cookie]);
+      response.send(user);
     } catch (error) {
       next(error);
     }
-  }
+  };
 }

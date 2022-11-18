@@ -4,21 +4,17 @@ import User from "../users/user.entity";
 
 @Entity()
 class Post {
-  //[x: string]: any;
   @PrimaryGeneratedColumn()
   public id?: number;
 
   @Column()
-  public author?: string;
+  public content: string;
 
   @Column()
-  public content?: string;
+  public title: string;
 
-  @Column()
-  public title?: string;
-
-  @ManyToOne(() => User, (postOwner) => postOwner.posts)
-  postOwner!: User;
+  @ManyToOne(() => User, (author) => author.posts)
+  public author: User;
 }
 
 export default Post;

@@ -11,7 +11,7 @@ export function validateUserForm(
 ) {
   const { name, email, password, confirmPassword } = req.body;
   if (!name || !email || !password || !confirmPassword) {
-    console.log("Please enter missing fields");
+    //console.log("Please enter missing fields");
     res.status(404).json({ message: "Please enter missing fields" });
     return;
   } else if (password != confirmPassword) {
