@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import { userController } from "entity/users/user.controller";
 import { ICreateUser } from "entity/users/user.interface";
 import jwt from "jsonwebtoken";
 import AppDataSource from "./../data-source";
