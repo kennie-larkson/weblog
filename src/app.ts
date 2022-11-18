@@ -4,7 +4,6 @@ import cors from "cors";
 import errorMiddleware from "./middleware/error.middleware";
 import IController from "./interfaces/controller.interface";
 import AppDataSource from "./data-source";
-import { userController } from "./entity/users/user.controller";
 
 class App {
   public app: express.Application;

@@ -18,12 +18,6 @@ export default class UserController {
   private initializeRoutes() {
     this.router.get(this.path, this.getAllUsers);
     this.router.get(`${this.path}/:id`, this.getUserById);
-    this.router.post(
-      `${this.path}`,
-      validateUserForm,
-      hashPassword,
-      this.createUser
-    );
     this.router.delete(`${this.path}/:id`, this.removeUser);
     this.router.patch(`${this.path}/:id`, this.updateUser);
   }
@@ -34,10 +28,12 @@ export default class UserController {
     next: NextFunction
   ) {
     try {
-      const users = AppDataSource.getRepository(User).find();
+      const users = await AppDataSource.manager.getRepository(User).find({
+        relations: { posts: true },
+      });
       return response.json(users);
     } catch (error) {
-      return response.json(error);
+      next(error);
     }
   }
 
@@ -54,19 +50,7 @@ export default class UserController {
 
       return response.json(user);
     } catch (error) {
-      return response.json(error);
-    }
-  }
-
-  async createUser(request: Request, response: Response, next: NextFunction) {
-    const user: ICreateUser = request.body;
-
-    try {
-      const createdUser = AppDataSource.getRepository(User).create(user);
-      const results = await AppDataSource.getRepository(User).save(createdUser);
-      return response.send(results);
-    } catch (error) {
-      return response.json(error);
+      next(error);
     }
   }
 
@@ -84,7 +68,7 @@ export default class UserController {
         message: `Successfully deleted records of user with id: ${id}.`,
       });
     } catch (error) {
-      return response.json(error);
+      next(error);
     }
   }
 
@@ -110,7 +94,7 @@ export default class UserController {
         updatedUser,
       });
     } catch (error) {
-      return response.json(error);
+      next(error);
     }
   }
 }

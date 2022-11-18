@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import "reflect-metadata";
+import User from "../users/user.entity";
 
 @Entity()
 class Post {
@@ -7,13 +8,13 @@ class Post {
   public id?: number;
 
   @Column()
-  public author?: string;
+  public content: string;
 
   @Column()
-  public content?: string;
+  public title: string;
 
-  @Column()
-  public title?: string;
+  @ManyToOne(() => User, (author) => author.posts)
+  public author: User;
 }
 
 export default Post;
