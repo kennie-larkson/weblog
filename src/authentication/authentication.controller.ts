@@ -28,7 +28,7 @@ export default class AuthController {
     const userData: ICreateUser = request.body;
     try {
       const { cookie, user } = await this.authService.register(userData);
-      console.log({ user, cookie });
+      // console.log({ user, cookie });
       response.setHeader("Set-Cookie", [cookie]);
       response.send(user);
     } catch (error) {

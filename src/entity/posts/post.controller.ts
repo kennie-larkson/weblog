@@ -1,6 +1,7 @@
 import express from "express";
 import IPost from "./post.interface";
 import { validatePostForm } from "./../../middleware/validation.middleware";
+import PostNotFoundException from "./../../exceptions/PostNotFoundException";
 
 import AppDataSource from "./../../data-source";
 import { NextFunction, Request, Response } from "express";
@@ -22,29 +23,31 @@ export default class PostController {
     this.router.patch(`${this.path}/:id`, this.updatePost);
   }
 
-  public async getAllPosts(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
+  public async getAllPosts(req: Request, res: Response, next: NextFunction) {
     try {
       const posts = await AppDataSource.manager
         .getRepository(Post)
         .find({ relations: { author: true } });
-      return response.json(posts);
+      return res.json(posts);
     } catch (error) {
-      return response.json(error);
+      return res.json(error);
     }
   }
 
-  async getPostById(request: Request, response: Response, next: NextFunction) {
-    const { id } = request.params;
-    return AppDataSource.manager.findOneBy(Post, { id: Number(id) });
+  async getPostById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const post: IPost = await AppDataSource.manager.findOneBy(Post, {
+      id: Number(id),
+    });
+    if (post) {
+      return res.status(200).json(post);
+    }
+    next(new PostNotFoundException(Number(id)));
   }
 
-  async createPost(request: Request, response: Response, next: NextFunction) {
-    const post: IPost = request.body;
-    //const post = request.body;
+  async createPost(req: Request, res: Response, next: NextFunction) {
+    const post: IPost = req.body;
+
     try {
       const createdPost = AppDataSource.manager
         .getRepository(Post)
@@ -52,23 +55,24 @@ export default class PostController {
       const result = await AppDataSource.manager
         .getRepository(Post)
         .save(createdPost);
-      return response.json(result);
+      return res.json(result);
     } catch (error) {
-      return response.json(error);
+      //return res.json(error);
+      next(error);
     }
   }
 
-  async removePost(request: Request, response: Response, next: NextFunction) {
-    const { id } = request.params;
+  async removePost(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
     let postToRemove = await AppDataSource.manager.findOneBy(Post, {
       id: Number(id),
     });
     await AppDataSource.manager.remove(postToRemove);
   }
 
-  async updatePost(request: Request, response: Response, next: NextFunction) {
-    const { id } = request.params;
-    const update = request.body;
+  async updatePost(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const update = req.body;
     console.log(update);
 
     try {
@@ -76,19 +80,19 @@ export default class PostController {
         id: Number(id),
       });
       if (!postToUpdate) {
-        return response.json({ message: `Unable to find post with id ${id}` });
+        return res.json({ message: `Unable to find post with id ${id}` });
       }
       AppDataSource.getRepository(Post).merge(postToUpdate, update);
       const updatedPost = await AppDataSource.getRepository(Post).save(
         postToUpdate
       );
 
-      return response.json({
+      return res.json({
         message: `Successfully updated data for post with id: ${id}.`,
         updatedPost,
       });
     } catch (error) {
-      return response.json(error);
+      return res.json(error);
     }
   }
 }

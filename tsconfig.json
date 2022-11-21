@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
-  }
-  //   "include": ["src/**/*.ts"],
-  //   "exclude": ["node_modules"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
