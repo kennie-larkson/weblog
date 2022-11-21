@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "npx nodemon ./src/server.ts",
+    "dev": "ts-node ./src/server.ts",
     "test": "nyc mocha --timeout 10000"
   },
   "keywords": [],
