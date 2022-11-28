@@ -30,7 +30,7 @@ export default class AuthController {
       const { cookie, user } = await this.authService.register(userData);
       // console.log({ user, cookie });
       response.setHeader("Set-Cookie", [cookie]);
-      response.send(user);
+      response.status(201).json(user);
     } catch (error) {
       next(error);
     }

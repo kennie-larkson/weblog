@@ -23,7 +23,7 @@ class User {
   public password: string;
 
   @OneToMany(() => Post, (post) => post.author, { cascade: true })
-  public posts: Post[];
+  public posts?: Post[];
 }
 
 export default User;
