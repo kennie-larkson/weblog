@@ -31,7 +31,7 @@ export default class UserController {
       const users = await AppDataSource.manager.getRepository(User).find({
         relations: { posts: true },
       });
-      return response.json(users);
+      return response.status(200).json(users);
     } catch (error) {
       next(error);
     }
@@ -46,6 +46,29 @@ export default class UserController {
       });
       if (!user) {
         return response.json({ message: `Unable to find user with id ${id}` });
+      }
+
+      return response.json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getUserByEmail(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const { email } = request.body;
+    console.log(email);
+    try {
+      const user = await AppDataSource.getRepository(User).findOneBy({
+        email: email,
+      });
+      if (!user) {
+        return response.json({
+          message: `Unable to find user with id ${email}`,
+        });
       }
 
       return response.json(user);

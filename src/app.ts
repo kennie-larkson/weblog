@@ -47,7 +47,7 @@ Database connection successfull!
 
   private home() {
     this.app.get("/", (req: Request, res: Response) => {
-      res.send("Welcome to weblog!");
+      res.status(200).send("Welcome to weblog!");
     });
   }
 
