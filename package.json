@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "NODE_ENV=production && tsc && node ./dist/server",
     "production": "tsc && node ./dist/server",
     "start": "nodemon server.ts",
     "dev": "ts-node ./src/server.ts",
