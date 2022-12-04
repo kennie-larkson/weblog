@@ -1,7 +1,7 @@
 {
   "name": "weblog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend of a fictitous social media built by Abdulrafiu Lawal",
   "main": "index.js",
   "scripts": {
     "build": "npm install && tsc",
