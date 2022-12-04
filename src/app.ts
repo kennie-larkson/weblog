@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
-import "dotenv/config";
+//import "dotenv/config";
+import * as dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 import errorMiddleware from "./middleware/error.middleware";
 import IController from "./interfaces/controller.interface";
