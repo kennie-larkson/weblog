@@ -1,4 +1,4 @@
-import AppDataSource from "src/data-source";
+import AppDataSource from "./../../data-source";
 import express, { NextFunction, Request, Response } from "express";
 import Topic from "./topic.entity";
 import { ICreateTopic } from "./topic.interface";
