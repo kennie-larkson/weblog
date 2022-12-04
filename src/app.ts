@@ -28,15 +28,19 @@ class App {
   }
 
   private connectToTheDatabase() {
-    AppDataSource.initialize().then(() =>
-      console.log(
-        `
+    AppDataSource.initialize()
+      .then(() =>
+        console.log(
+          `
 /////////////////////////////////////////////        
 Database connection successfull!
 ////////////////////////////////////////////
       `
+        )
       )
-    );
+      .catch((e) => {
+        console.log("Oops! Error connecting to postgres database server" + e);
+      });
   }
 
   private initializeControllers(controllers: IController[]) {
