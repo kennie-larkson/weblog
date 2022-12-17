@@ -38,7 +38,7 @@ export default class AuthenticationService {
   public createToken(user: User): ITokenData {
     const expiresIn = 60 * 60; // an hour
     const secret = process.env.JWT_SECRET;
-    const dataStoredInToken: IDataStoredInToken = { id: user.id };
+    const dataStoredInToken: IDataStoredInToken = { email: user.email };
 
     return {
       expiresIn,

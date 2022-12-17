@@ -12,11 +12,11 @@ export function validateUserForm(
   const { name, email, password, confirmPassword } = req.body;
   if (!name || !email || !password || !confirmPassword) {
     //console.log("Please enter missing fields");
-    res.status(404).json({ message: "Please enter missing fields" });
+    res.status(400).json({ message: "Please enter missing fields" });
     return;
   } else if (password != confirmPassword) {
     return res
-      .status(404)
+      .status(400)
       .json({ status: false, message: "Your passwords do not match" });
   }
   next();
@@ -28,6 +28,7 @@ export function validatePostForm(
   next: NextFunction
 ) {
   const { author, content, title }: IPost = req.body;
+
   try {
     if (!author || !content || !title) {
       return res.json({

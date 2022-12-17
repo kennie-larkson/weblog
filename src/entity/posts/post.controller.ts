@@ -47,7 +47,13 @@ export default class PostController {
 
   async createPost(req: Request, res: Response, next: NextFunction) {
     const post: IPost = req.body;
-
+    //console.log(req.headers);
+    if (!req.headers["authorization"]) {
+      res
+        .status(404)
+        .json({ message: "You cannot make a post without authentication" });
+      return;
+    }
     try {
       const createdPost = AppDataSource.manager
         .getRepository(Post)
