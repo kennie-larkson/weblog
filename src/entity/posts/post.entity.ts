@@ -13,7 +13,7 @@ class Post {
   @Column()
   public title: string;
 
-  @ManyToOne(() => User, (author) => author.posts)
+  @ManyToOne(() => User, (author) => author.posts, { cascade: true })
   public author: User;
 }
 

@@ -6,6 +6,7 @@ import {
   validateUserForm,
   hashPassword,
 } from "./../../middleware/validation.middleware";
+import Post from "./../posts/post.entity";
 
 export default class UserController {
   public path = "/users";
@@ -18,26 +19,26 @@ export default class UserController {
   private initializeRoutes() {
     this.router.get(this.path, this.getAllUsers);
     this.router.get(`${this.path}/:id`, this.getUserById);
+    this.router.post(`${this.path}/email`, this.getUserByEmail);
     this.router.delete(`${this.path}/:id`, this.removeUser);
+    this.router.delete(`${this.path}`, this.removeAllUsers);
     this.router.patch(`${this.path}/:id`, this.updateUser);
   }
 
-  public async getAllUsers(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
+  public async getAllUsers(_request: Request, response: Response) {
     try {
       const users = await AppDataSource.manager.getRepository(User).find({
         relations: { posts: true },
       });
+      users.map((user) => delete user.password);
       return response.status(200).json(users);
     } catch (error) {
-      next(error);
+      console.error(error);
+      response.status(500).json({ message: "Server error" });
     }
   }
 
-  async getUserById(request: Request, response: Response, next: NextFunction) {
+  async getUserById(request: Request, response: Response) {
     const { id } = request.params;
     console.log(id);
     try {
@@ -50,15 +51,12 @@ export default class UserController {
 
       return response.json(user);
     } catch (error) {
-      next(error);
+      console.error(error);
+      response.status(500).json({ message: "Server error" });
     }
   }
 
-  async getUserByEmail(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
+  async getUserByEmail(request: Request, response: Response) {
     const { email } = request.body;
     console.log(email);
     try {
@@ -67,21 +65,24 @@ export default class UserController {
       });
       if (!user) {
         return response.json({
-          message: `Unable to find user with id ${email}`,
+          message: `Unable to find user with email: ${email}`,
         });
       }
 
       return response.json(user);
     } catch (error) {
-      next(error);
+      console.error(error);
+      response.status(500).json({ message: "Server error" });
     }
   }
 
-  async removeUser(request: Request, response: Response, next: NextFunction) {
+  async removeUser(request: Request, response: Response) {
     const { id } = request.params;
 
     try {
+      await AppDataSource.getRepository(Post).delete({ author: { id: +id } });
       const removedUser = await AppDataSource.getRepository(User).delete(id);
+
       if (removedUser.affected === 0) {
         return response.json(
           `Unable to find user with id: ${id} for deletion.`
@@ -91,11 +92,12 @@ export default class UserController {
         message: `Successfully deleted records of user with id: ${id}.`,
       });
     } catch (error) {
-      next(error);
+      console.error(error);
+      response.status(500).json({ message: "Server error." });
     }
   }
 
-  async updateUser(request: Request, response: Response, next: NextFunction) {
+  async updateUser(request: Request, response: Response) {
     const { id } = request.params;
     const update: IUpdateUser = request.body;
     console.log(update);
@@ -117,7 +119,19 @@ export default class UserController {
         updatedUser,
       });
     } catch (error) {
-      next(error);
+      console.error(error);
+      response.status(500).json({ message: "Server error." });
+    }
+  }
+
+  async removeAllUsers(request: Request, response: Response) {
+    try {
+      await AppDataSource.getRepository(Post).clear();
+      await AppDataSource.getRepository(User).clear();
+      response.status(200).json({ message: "Users successfully deleted." });
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ message: "Server error." });
     }
   }
 }

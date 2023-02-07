@@ -1,5 +1,8 @@
 interface IDataStoredInToken {
-  email: string;
+  //email: string;
+  user: {
+    id: number;
+  };
 }
 
 export default IDataStoredInToken;

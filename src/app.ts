@@ -41,7 +41,7 @@ Database connection successfull!
         )
       )
       .catch((e) => {
-        console.log("Oops! Error connecting to postgres database server" + e);
+        console.log("Oops! Error connecting to postgres database server " + e);
       });
   }
 

@@ -1,11 +1,16 @@
 import express from "express";
 import IPost from "./post.interface";
-import { validatePostForm } from "./../../middleware/validation.middleware";
+import {
+  validatePostForm,
+  verifyToken,
+} from "./../../middleware/validation.middleware";
 import PostNotFoundException from "./../../exceptions/PostNotFoundException";
+import { RequestType } from "./../../middleware/validation.middleware";
 
 import AppDataSource from "./../../data-source";
 import { NextFunction, Request, Response } from "express";
 import Post from "./post.entity";
+import User from "./../users/user.entity";
 
 export default class PostController {
   public path = "/posts";
@@ -16,18 +21,38 @@ export default class PostController {
   }
 
   private initializeRoutes() {
-    this.router.get(this.path, this.getAllPosts);
+    this.router.get(this.path, verifyToken, this.getAllPosts);
     this.router.get(`${this.path}/:id`, this.getPostById);
-    this.router.post(`${this.path}`, validatePostForm, this.createPost);
+    this.router.post(
+      `${this.path}`,
+      verifyToken,
+      validatePostForm,
+      this.createPost
+    );
     this.router.delete(`${this.path}/:id`, this.removePost);
     this.router.patch(`${this.path}/:id`, this.updatePost);
   }
 
-  public async getAllPosts(req: Request, res: Response, next: NextFunction) {
+  public async getAllPosts(
+    req: RequestType<{
+      id: number;
+    }>,
+    res: Response
+  ) {
+    const user = await AppDataSource.getRepository(User).findBy({
+      id: req.user.id,
+    });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Wrong credentials. Access denied!" });
+    }
+
     try {
       const posts = await AppDataSource.manager
         .getRepository(Post)
         .find({ relations: { author: true } });
+      posts.map((post) => delete post.author.password);
       return res.json(posts);
     } catch (error) {
       return res.json(error);
@@ -45,25 +70,24 @@ export default class PostController {
     next(new PostNotFoundException(Number(id)));
   }
 
-  async createPost(req: Request, res: Response, next: NextFunction) {
+  async createPost(
+    req: RequestType<{ user: User }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    console.log(req.user);
+
     const post: IPost = req.body;
-    //console.log(req.headers);
-    if (!req.headers["authorization"]) {
-      res
-        .status(404)
-        .json({ message: "You cannot make a post without authentication" });
-      return;
-    }
+
     try {
       const createdPost = AppDataSource.manager
         .getRepository(Post)
-        .create(post);
+        .create({ ...post });
       const result = await AppDataSource.manager
         .getRepository(Post)
         .save(createdPost);
       return res.json(result);
     } catch (error) {
-      //return res.json(error);
       next(error);
     }
   }

@@ -1,8 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import Express, { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ICreateUser } from "./../entity/users/user.interface";
 import IPost from "./../entity/posts/post.interface";
+import User from "entity/users/user.entity";
+
+export interface RequestType<T> extends Express.Request {
+  user: T;
+}
 
 export function validateUserForm(
   req: Request,
@@ -27,10 +32,10 @@ export function validatePostForm(
   res: Response,
   next: NextFunction
 ) {
-  const { author, content, title }: IPost = req.body;
+  const { content, title }: IPost = req.body;
 
   try {
-    if (!author || !content || !title) {
+    if (!content || !title) {
       return res.json({
         message: "Please, enter all required fields to create your Post.",
       });
@@ -53,3 +58,34 @@ export async function hashPassword(
   req.body.user = user;
   next();
 }
+
+export const verifyToken = async (
+  req: RequestType<{}>,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "No token, authorization denied." });
+  }
+
+  try {
+    // verify token and extract user
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = Object.values(decoded)[0];
+
+    req.user = user;
+
+    next();
+  } catch (error) {
+    console.error(error);
+    if (error.name === "TokenExpiredError") {
+      return res.status(500).json({
+        message: "Your session has expired. Kindly login again to continue.",
+      });
+    }
+    return res.status(500).json({ message: "Server error", error });
+  }
+};

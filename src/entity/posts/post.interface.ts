@@ -5,7 +5,7 @@ interface IPost {
   id?: number;
   content: string;
   title: string;
-  author: Partial<IUser>;
+  //author: Partial<IUser>;
 }
 
 export default IPost;

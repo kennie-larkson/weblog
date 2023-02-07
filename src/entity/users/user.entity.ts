@@ -19,10 +19,11 @@ class User {
   @Column()
   public email: string;
 
-  @Column({ select: false })
+  //@Column({ select: false })
+  @Column()
   public password: string;
 
-  @OneToMany(() => Post, (post) => post.author, { cascade: true })
+  @OneToMany(() => Post, (post) => post.author)
   public posts?: Post[];
 }
 
