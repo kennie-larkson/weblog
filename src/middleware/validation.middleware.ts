@@ -65,8 +65,8 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
     console.log("got here");
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       console.log("got here");
